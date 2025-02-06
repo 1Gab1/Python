@@ -1,0 +1,2 @@
+email = input()  
+print(f"Domain: {email.split('@')[-1]}")  
