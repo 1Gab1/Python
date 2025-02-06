@@ -1,0 +1,3 @@
+word = input()  
+index = int(input())  
+print(f'Substring from index {index}: "{word[index:]}"')  
