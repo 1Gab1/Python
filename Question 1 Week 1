@@ -1,0 +1,4 @@
+num = float(input())  
+print(f"Original float: {num}")  
+print(f"Converted to integer: {int(num)}")  
+print(f'Converted to string: "{str(num)}"')  
