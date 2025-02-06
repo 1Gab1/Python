@@ -1,3 +1,0 @@
-name = input()  
-first, last = name.split()  
-print(f"Your initials are: {first[0].upper()}.{last[0].upper()}")  
