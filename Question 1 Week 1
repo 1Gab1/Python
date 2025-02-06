@@ -1,4 +1,12 @@
+1)
 num = float(input())  
 print(f"Original float: {num}")  
 print(f"Converted to integer: {int(num)}")  
 print(f'Converted to string: "{str(num)}"')  
+
+2)
+name = input()  
+first, last = name.split()  
+print(f"Your initials are: {first[0].upper()}.{last[0].upper()}")  
+
+3)
