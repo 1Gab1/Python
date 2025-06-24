@@ -1,111 +1,79 @@
-from abc import ABC, abstractmethod
+import os
 
-# abstract base class
-class LibraryItem(ABC):
-    def __init__(self, title, item_id):
-        self.__title = title
-        self.__item_id = item_id
+# 1️ Function to Read File Content
+def read_file_content(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return file.read()
 
-    def get_title(self):
-        return self.__title
+# 2️ Function to Write Content to a File
+def write_to_file(file_path, content):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(content)
 
-    def get_item_id(self):
-        return self.__item_id
+# 3️ Function to Find the Longest Word in a File
+def find_longest_word(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        words = file.read().split()
+    return max(words, key=len) if words else None
 
-    def set_title(self, title):
-        self.__title = title
+# 4️ Function to Check if a File is Empty
+def check_file_empty(file_path):
+    return os.stat(file_path).st_size == 0  # Returns True if file size is 0
 
-    def set_item_id(self, item_id):
-        self.__item_id = item_id
+# 5️ Function to Reverse File Content and Save to a New File
+def reverse_file_content(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()[::-1]  # Reverse content
 
-    @abstractmethod
-    def display_details(self):
-        pass
+    new_file_path = os.path.join(os.path.dirname(file_path), "reversed.txt")
+    with open(new_file_path, 'w', encoding='utf-8') as new_file:
+        new_file.write(content)
 
-# Book class
-class Book(LibraryItem):
-    def __init__(self, title, item_id, author, isbn, year):
-        super().__init__(title, item_id)
-        self.author = author
-        self.isbn = isbn
-        self.year = year
+# 6️ Function to Convert List of Strings to Uppercase Using Lambda
+def convert_to_uppercase(words):
+    return list(map(lambda word: word.upper(), words))
 
-    def display_details(self):
-        print("Book:", self.get_title(), self.get_item_id(), self.author, self.isbn, self.year)
+# 7️ Function to Filter Even-Length Words Using Lambda
+def filter_even_length_words(words):
+    return list(filter(lambda word: len(word) % 2 == 0, words))
 
-# Magazine class
-class Magazine(LibraryItem):
-    def __init__(self, title, item_id, issue_number, publisher):
-        super().__init__(title, item_id)
-        self.issue_number = issue_number
-        self.publisher = publisher
+# 8️ Function to Process a File and Convert Words to Uppercase Using Lambda
+def process_file_with_lambda(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
 
-    def display_details(self):
-        print("Magazine:", self.get_title(), self.get_item_id(), self.issue_number, self.publisher)
+    processed_lines = [" ".join(map(lambda word: word.upper(), line.split())) for line in lines]
 
-# Library Member
-class LibraryMember:
-    def __init__(self, member_id, name):
-        self.__member_id = member_id
-        self.__name = name
-        self.__borrowed_items = []
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write("\n".join(processed_lines))
 
-    def get_member_id(self):
-        return self.__member_id
+if __name__ == "__main__":
+    file_path = r"C:\Users\DELL.DESKTOP-9SPGAH9\Desktop\LDR 300\Inter.txt"
 
-    def get_name(self):
-        return self.__name
+    # Read and print content
+    print("File Content:")
+    print(read_file_content(file_path))
 
-    def get_borrowed_items(self):
-        return self.__borrowed_items
+    # Write to file
+    write_to_file(file_path, "Hello World! Python is fun.")
 
-    def borrow_item(self, item):
-        self.__borrowed_items.append(item)
+    # Find longest word
+    print("Longest Word:", find_longest_word(file_path))
 
-    def return_item(self, item):
-        if item in self.__borrowed_items:
-            self.__borrowed_items.remove(item)
+    # Check if file is empty
+    print("Is File Empty:", check_file_empty(file_path))
 
-# Library class
-class Library:
-    def __init__(self):
-        self.items = {}
-        self.members = {}
+    # Reverse content and save to 'reversed.txt'
+    reverse_file_content(file_path)
+    print("Reversed file content saved.")
 
-    def add_item(self, item):
-        self.items[item.get_item_id()] = item
+    # Convert list of words to uppercase
+    words_list = ["hello", "world", "python", "lambda"]
+    print("Uppercase Words:", convert_to_uppercase(words_list))
 
-    def register_member(self, member):
-        self.members[member.get_member_id()] = member
+    # Filter even-length words
+    print("Even-Length Words:", filter_even_length_words(words_list))
 
-    def borrow_item(self, member_id, item_id):
-        if member_id in self.members and item_id in self.items:
-            member = self.members[member_id]
-            item = self.items[item_id]
-            member.borrow_item(item)
-            print(f"{member.get_name()} borrowed {item.get_title()}")
-
-    def return_item(self, member_id, item_id):
-        if member_id in self.members and item_id in self.items:
-            member = self.members[member_id]
-            item = self.items[item_id]
-            member.return_item(item)
-            print(f"{member.get_name()} returned {item.get_title()}")
-
-# example
-lib = Library()
-
-b1 = Book("Python Book", 1, "Anush", "123-456", 2022)
-m1 = Magazine("Tech Monthly", 2, "Issue 9", "TechMedia")
-
-lib.add_item(b1)
-lib.add_item(m1)
-
-mem1 = LibraryMember(100, "Golu")
-lib.register_member(mem1)
-
-lib.borrow_item(100, 1)
-lib.borrow_item(100, 2)
-
-b1.display_details()
-m1.display_details()
+    # Process file and convert words to uppercase
+    process_file_with_lambda(file_path)
+    print("File content converted to uppercase.")
